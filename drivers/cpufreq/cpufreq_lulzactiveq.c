@@ -265,15 +265,15 @@ static unsigned int get_nr_run_avg(void)
 }
 
 
-#define DEF_SAMPLING_RATE			(50000)
+#define DEF_SAMPLING_RATE			(100000)
 #define MIN_SAMPLING_RATE			(10000)
 #define MAX_HOTPLUG_RATE			(40u)
 
 #define DEF_MAX_CPU_LOCK			(0)
 #define DEF_MIN_CPU_LOCK			(0)
 #define DEF_UP_NR_CPUS				(1)
-#define DEF_CPU_UP_RATE				(10)
-#define DEF_CPU_DOWN_RATE			(20)
+#define DEF_CPU_UP_RATE				(5)
+#define DEF_CPU_DOWN_RATE			(10)
 #define DEF_START_DELAY				(0)
 
 #define HOTPLUG_DOWN_INDEX			(0)
