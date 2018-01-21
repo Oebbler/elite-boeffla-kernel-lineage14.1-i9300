@@ -13,7 +13,7 @@
 # ********************************
 
 # kernel specification (hardware; type; target; url)
-KERNEL_SPECS="i9300;lineage;lineage14.1;https://77.119.236.213/cm-i9300/boeffla-oc/cm-14.1/"
+KERNEL_SPECS="i9300;cm;cm14.0;http://127.0.0.1"
 
 # kernel features 
 # (1=enable-busybox,2=enable-frandom,3=wipe-cache,4=disable-zram-control)
@@ -319,9 +319,9 @@ fi
 
 if [ "param_readahead" == "$1" ]; then
 	# Internal sd (min/max/steps)
-	echo "128;3072;128;"
+	echo "128;4096;128;"
 	# External sd (min/max/steps)
-	echo "128;3072;128"
+	echo "128;4096;128"
 	exit 0
 fi
 
@@ -379,11 +379,11 @@ fi
 
 if [ "param_charge_rates" == "$1" ]; then
 	# AC charge min/max/steps
-	echo "0;2100;5;"
+	echo "0;2100;25;"
 	# USB charge min/max/steps
-	echo "0;2100;5;"
+	echo "0;2100;25;"
 	# Wireless charge min/max/steps
-	echo "0;2100;5"
+	echo "0;2100;25"
 	exit 0
 fi
 
