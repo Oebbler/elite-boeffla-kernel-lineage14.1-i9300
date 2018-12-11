@@ -1,0 +1,12 @@
+for i in 0 1 2 3; do
+	if [ -f /sys/devices/system/cpu/cpu$i/online ]; then
+		on="$(cat /sys/devices/system/cpu/cpu$i/online | grep -o '1')"
+	else
+		on="1"
+	fi
+	if [ -z $on ]; then
+		echo -e "CPU $i: off\n"
+	else
+		echo -e "CPU $i: $(($(cat /sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_cur_freq) / 1000)) MHz\n"
+	fi
+done

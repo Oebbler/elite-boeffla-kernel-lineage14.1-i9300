@@ -1,0 +1,2 @@
+echo "1" > /sys/devices/platform/i2c-gpio.14/i2c-14/14-0036/power_supply/max17047-fuelgauge/
+echo "unsupported"

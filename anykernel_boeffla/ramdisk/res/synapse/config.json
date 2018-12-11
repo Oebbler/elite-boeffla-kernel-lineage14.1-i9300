@@ -1,0 +1,615 @@
+
+{
+    sections: [
+		
+
+{
+    name:INFO+MISC,
+    elements:[
+{ STitleBar:{
+	title:"Information about your device",
+}},
+{ SLiveLabel:{
+   title:"Information about your Exynos 4412",
+   refresh:3600000,
+   action:"cat /proc/cpuinfo",
+}},
+{ SLiveLabel:{
+   title:"CPU Frequency Table",
+   refresh:1000,
+   action:"cat /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+}},
+{ SLiveLabel:{
+   title:"Uptime since boot",
+   refresh:1000,
+   action:"cat /proc/uptime",
+}},
+{ SLiveLabel:{
+   title:"CPU temperature (°C)",
+   refresh:1000,
+   action:"cat /sys/devices/platform/s5p-tmu/temperature",
+}},
+{ SLiveLabel:{
+   title:"RAM and SWAP usage",
+   refresh:1000,
+   action:"cat /proc/meminfo",
+}},
+{ SLiveLabel:{
+   title:"Free RAM",
+   refresh:1000,
+   action:"busybox free -m",
+}},
+{ SLiveLabel:{
+   title:"Active SWAP partitions",
+   refresh:1000,
+   action:"cat /proc/swaps",
+}},
+{ SLiveLabel:{
+   title:"Current CPU Frequency",
+   refresh:1000,
+   action:"show-cpufreq",
+}},
+{ SLiveLabel:{
+   title:"Current CPU Governor",
+   refresh:5000,
+   action:"cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+}},
+{ SLiveLabel:{
+   title:"Current charger / current charging rate",
+   refresh:1000,
+   action:"cat /sys/kernel/charge_levels/charge_info",
+}},
+
+{ STitleBar:{
+	title:"Miscellaneous settings",
+}},
+	{ STitleBar:{
+		title:"Logcat creation",
+	}},
+	{ SCheckBox:{
+		description:"When disabled this will stop logcat creation; crash reports will be useless, but there is a minor possible gain to battery life.",
+                label:"Android Logcat",
+                default:1,
+                action:"generic-switch /sys/kernel/logger_mode/logger_mode",
+        }},
+{ SPane:{
+		title:"Charging levels",
+	}},
+	{ SCheckBox:{
+		description:"When enabled the kernel will set the given charging current, no matter of the stability of input power. This is potentially dangerous.",
+                label:"Ignore unstable charging power",
+                default:0,
+                action:"generic /sys/kernel/charge_levels/ignore_unstable_power",
+        }},
+	{ SCheckBox:{
+		description:"When enabled the kernel will disable the safety margin for charging. That means the kernel will not decrease the charging current by 100mA when decreasing charging current due to unstable power. This is potentially dangerous.",
+                label:"Ignore safety margin",
+                default:0,
+                action:"generic /sys/kernel/charge_levels/ignore_safety_margin",
+        }},
+{ SSeekBar:{
+        default:1100,
+        title:"AC",
+        action:"generic-charge /sys/kernel/charge_levels/charge_level_ac",
+        min:0, max:2100, step:5 }},
+{ SSeekBar:{
+        default:500,
+        title:"USB",
+        action:"generic-charge /sys/kernel/charge_levels/charge_level_usb",
+        min:0, max:2100, step:5 }},
+{ SSeekBar:{
+        default:1000,
+        title:"Wireless",
+        action:"generic-charge /sys/kernel/charge_levels/charge_level_wireless",
+        min:0, max:2100, step:5 }},
+{ SPane:{
+                title:"Other system tweaks",
+        }},
+{ SCheckBox:{
+   title:"Dynamic FSync by faux123",
+   default:1,
+   action:"generic /sys/kernel/dyn_fsync/Dyn_fsync_active",
+}},
+{ SCheckBox:{
+   title:"Enable SELinux",
+   default:0,
+   action:"generic /sys/fs/selinux/enforce",
+}},
+{ SSeekBar:{
+        default:60,
+        title:"Swappiness",
+	description:"Here you can set how much SWAP is used if it is active.",
+        action:"generic /proc/sys/vm/swappiness",
+        min:0, max:100, step:1 }},
+ ]
+},
+
+{
+    name:CPU,
+    elements:[
+	{ STitleBar:{
+		title:"CPU Frequency"
+	}},
+	{ SSeekBar:{
+	title:"CPU Max Frequency",
+		description:"Set the maximum frequency the CPU scales up to.",
+		default:1600000,
+		action:"generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
+		values:{
+2000000:"2000 MHz",
+1902000:"1902 MHz",
+1800000:"1800 MHz",
+1704000:"1704 MHz",
+1600000:"1600 MHz",
+1500000:"1500 MHz",
+1400000:"1400 MHz",
+1300000:"1300 MHz",
+1200000:"1200 MHz",
+1100000:"1100 MHz",
+1000000:"1000 MHz",
+900000:"900 MHz",
+800000:"800 MHz",
+700000:"700 MHz",
+600000:"600 MHz",
+500000:"500 MHz",
+400000:"400 MHz",
+300000:"300 MHz",
+200000:"200 MHz",
+100000:"100 MHz",
+		}
+	}},
+	{ SSeekBar:{
+	title:"CPU Min Frequency",
+		description:"Set the minimum frequency the CPU scales down to.",
+		default:100000,
+		action:"generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		values:{
+2000000:"2000 MHz",
+1902000:"1902 MHz",
+1800000:"1800 MHz",
+1704000:"1704 MHz",
+1600000:"1600 MHz",
+1500000:"1500 MHz",
+1400000:"1400 MHz",
+1300000:"1300 MHz",
+1200000:"1200 MHz",
+1100000:"1100 MHz",
+1000000:"1000 MHz",
+900000:"900 MHz",
+800000:"800 MHz",
+700000:"700 MHz",
+600000:"600 MHz",
+500000:"500 MHz",
+400000:"400 MHz",
+300000:"300 MHz",
+200000:"200 MHz",
+100000:"100 MHz",
+		}
+	}},
+{ STitleBar:{
+        title:"CPU Tweaks"
+    }},
+{ SOptionList:{
+        title:"Multicore Power Saving",
+        description:"Try to group tasks into the least cores possible. This feature is experimental and does work with multicore governors only. Proceed with caution.",
+        default:0,
+        action:"generic /sys/devices/system/cpu/sched_mc_power_savings",
+        values:{ 0:"Off", 1:"On", 2:"Aggressive" }
+    }},
+    { SOptionList:{
+        title:"CPU Idle mode",
+        description:"Here you can change the mode of cpuidle-driver. AFTR+LPA works best on our Galaxy S3",
+        default:2,
+        action:"generic /sys/module/cpuidle_exynos4/parameters/enable_mask",
+        values:{
+0:"Idle",
+1:"AFTR",
+2:"Idle+LPA",
+3:"AFTR+LPA",
+        },
+    }},
+{ SCheckBox:{
+   title:"Touch Boost",
+   description:"When enabling Touch Boost the CPU will set the minimum frequency to the frequency that is set below (Touch Boost Frequency) as long as you touch the screen. When you release it the CPU uses the minimum frequency that is set above (CPU Min Frequency).",
+   default:1,
+   action:"generic-switch /sys/devices/virtual/misc/touchboost_switch/touchboost_switch",
+}},
+	{ SSeekBar:{
+	title:"CPU Min TouchBoost Frequency",
+		description:"Set the minimum frequency the CPU scales down to when touching the screen",
+		default:800000,
+		action:"generic-charge /sys/devices/virtual/misc/touchboost_switch/touchboost_freq",
+		values:{
+2000000:"2000 MHz",
+1902000:"1902 MHz",
+1800000:"1800 MHz",
+1704000:"1704 MHz",
+1600000:"1600 MHz",
+1500000:"1500 MHz",
+1400000:"1400 MHz",
+1300000:"1300 MHz",
+1200000:"1200 MHz",
+1100000:"1100 MHz",
+1000000:"1000 MHz",
+900000:"900 MHz",
+800000:"800 MHz",
+700000:"700 MHz",
+600000:"600 MHz",
+500000:"500 MHz",
+400000:"400 MHz",
+300000:"300 MHz",
+200000:"200 MHz",
+100000:"100 MHz",
+		}
+	}},
+{ SPane:{
+		title:"CPU Voltage Control",
+		description:"Decreasing voltage will lower power consumption of the CPU. Increasing it on overclocked frequencies improves stability. Too low voltage may cause instabilities and freezes."
+	}},
+
+{ SSeekBar:{
+        default:1500,
+        title:"2000MHz",
+        action:"cpuvolt 2000mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1500,
+        title:"1904MHz",
+        action:"cpuvolt 1904mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1475,
+        title:"1800MHz",
+        action:"cpuvolt 1800mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1425,
+        title:"1704MHz",
+        action:"cpuvolt 1704mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1400,
+        title:"1600MHz",
+        action:"cpuvolt 1600mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1375,
+        title:"1500MHz",
+        action:"cpuvolt 1500mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1300,
+        title:"1400MHz",
+        action:"cpuvolt 1400mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1225,
+        title:"1300MHz",
+        action:"cpuvolt 1300mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1200,
+        title:"1200MHz",
+        action:"cpuvolt 1200mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1150,
+        title:"1100MHz",
+        action:"cpuvolt 1100mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1100,
+        title:"1000MHz",
+        action:"cpuvolt 1000mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1050,
+        title:"900MHz",
+        action:"cpuvolt 900mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:1000,
+        title:"800MHz",
+        action:"cpuvolt 800mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:975,
+        title:"700MHz",
+        action:"cpuvolt 700mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:955,
+        title:"600MHz",
+        action:"cpuvolt 600mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:950,
+        title:"500MHz",
+        action:"cpuvolt 500mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:950,
+        title:"400MHz",
+        action:"cpuvolt 400mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:925,
+        title:"300MHz",
+        action:"cpuvolt 300mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+	default:900,
+	title:"200MHz",
+	action:"cpuvolt 200mhz:",
+	unit:" mV", min:600, max:1600, step:25 }},
+{ SSeekBar:{
+        default:825,
+        title:"100MHz",
+        action:"cpuvolt 100mhz:",
+        unit:" mV", min:600, max:1600, step:25 }},
+    ]
+},
+        {
+  name:GOVERNOR+I/O,
+  elements:[
+    { SPane:{
+        title:"CPU Governor",
+        description:"The CPU governor determines how the CPU responds to changes in workload. Changing the governor will impact how the CPU scales through the frequency steps available."
+    }},
+    { SOptionList:{
+        default:ondemand,
+        action:"generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+        values:[
+"zzmoove",
+"wheatley",
+"intelliactive",
+"interactive",
+"pegasusq",
+"pegasusqplus",
+"conservative",
+"adaptive",
+"powersave",
+"ondemand",
+"performance",
+"smartassV2",
+"lulzactiveq",
+        ],
+        notify:[
+            { on:APPLY,
+              do:[ REFRESH, CANCEL ],
+              to:"/sys/devices/system/cpu/cpufreq"
+            },
+            { on:REFRESH,
+              do:REFRESH,
+              to:"/sys/devices/system/cpu/cpufreq"
+            }
+        ]
+    }},
+    { SPane:{
+        title:"CPU Governor Tunables",
+        description:"Auto-generated controls for the current governor. Info about tunables by <a href='http://forum.xda-developers.com/showpost.php?p=19846297&postcount=2'>Droidphile</a> and <a href='http://forum.xda-developers.com/showpost.php?p=33803172&postcount=53'>AndreiLux</a>."
+    }},
+    { STreeDescriptor:{
+        path:"/sys/devices/system/cpu/cpufreq/pegasusq",
+        generic:{ directory:
+            { STreeDescriptor:{
+                generic:{ 
+                    directory:{ },
+                    element:{ SGeneric:{ title:"@NAME" }}
+                },
+                exclude:[ "boostpulse",
+                          "sampling_rate_current",
+                          "profile",
+                          "flexrate_num_effective_usage",
+                          "io_is_busy" ]
+            }}
+        },
+        exclude:[ "kset" ]
+    }}
+    { SPane:{
+        title:"I/O options",
+        description:"Here you can change how data is queued before it is written to memory. It's also possible to change cache size to maximize memory performance. You can change both separately for internal memory and your microSD-card.",
+    }},
+	{ SOptionList:{
+		title:"I/O Scheduler for internal memory",
+		default:cfq,
+		action:"bracket-option /sys/block/mmcblk0/queue/scheduler",
+		values:[
+"noop",
+"deadline",
+"row",
+"cfq",
+"bfq",
+"sio",
+"zen",
+		]
+	}},
+        { SOptionList:{
+                title:"I/O Scheduler for external microSD-card",
+                default:cfq,
+                action:"bracket-option /sys/block/mmcblk1/queue/scheduler",
+                values:[
+"noop",
+"deadline",
+"row",
+"cfq",
+"bfq",
+"sio",
+"zen",
+                ]
+        }},
+	{ SSeekBar:{
+		title:"I/O read-ahead buffer (internal memory)",
+		max:4096, min:128, unit:" kB", step:128,
+		default:256,
+                action:"generic /sys/block/mmcblk0/queue/read_ahead_kb",
+	}},
+	{ SSeekBar:{
+		title:"I/O read-ahead buffer (microSD-card)",
+		max:4096, min:128, unit:" kB", step:128,
+		default:256,
+                action:"generic /sys/block/mmcblk1/queue/read_ahead_kb",
+	}},
+  ]
+},
+		{
+    name:GPU,
+    elements:[
+	{ STitleBar:{
+		title:"GPU Control"
+	}},
+{ SPane:{
+		title:"GPU Frequency Control",
+		description:"The defaults are 160MHz, 266MHz, 350MHz, 440MHz and 533MHz. This doesn't work at the moment."
+	}},
+
+{ SSeekBar:{
+        default:160,
+        title:"Step 1",
+        action:"gpuclk Step0:",
+        min:10, max:800, step:5 }},
+{ SSeekBar:{
+        default:266,
+        title:"Step 2",
+        action:"gpuclk Step1:",
+        min:10, max:800, step:5 }},
+{ SSeekBar:{
+        default:350,
+        title:"Step 3",
+        action:"gpuclk Step2:",
+        min:10, max:800, step:5 }},
+{ SSeekBar:{
+        default:440,
+        title:"Step 4",
+        action:"gpuclk Step3:",
+        min:10, max:800, step:5 }},
+{ SSeekBar:{
+        default:533,
+        title:"Step 5",
+        action:"gpuclk Step4:",
+        min:10, max:800, step:5 }},
+
+{ SPane:{
+		title:"GPU Voltage Control",
+		description:"Change the voltage of your GPU. Too low voltage may cause instabilities and freezes."
+	}},
+
+{ SSeekBar:{
+        default:900000,
+        title:"Step 1",
+        action:"gpuvolt Step1:",
+        min:500000, max:1200000, step:25000 }},
+{ SSeekBar:{
+        default:925000,
+        title:"Step 2",
+        action:"gpuvolt Step2:",
+        min:500000, max:1200000, step:25000 }},
+{ SSeekBar:{
+        default:1000000,
+        title:"Step 3",
+        action:"gpuvolt Step3:",
+        min:500000, max:1200000, step:25000 }},
+{ SSeekBar:{
+        default:1050000,
+        title:"Step 4",
+        action:"gpuvolt Step4:",
+        min:500000, max:1200000, step:25000 }},
+{ SSeekBar:{
+        default:1125000,
+        title:"Step 5",
+        action:"gpuvolt Step5:",
+        min:500000, max:1200000, step:25000 }},
+
+
+    ]
+},
+{
+  name:BOEFFLA SOUND,
+  elements:[
+{ SCheckBox:{
+   title:"Boeffla Sound main switch",
+   default:0,
+   action:"generic-switch /sys/class/misc/boeffla_sound/boeffla_sound",
+}},
+    { STitleBar:{
+                title:"Boeffla sound control module",
+	description:"Here you can configure the Boeffla Sound module. Current Boeffla Sound version: 1.6.7",
+        }},
+	]
+},
+		{
+    name:DISPLAY+LED,
+    elements:[
+    { STitleBar:{
+		title:"Display Control",
+	}},
+{ SPane:{
+                title:"MDNIE control",
+        }},
+{ SCheckBox:{
+   title:"MDNIE sharpness fix",
+   default:0,
+   action:"generic-switch /sys/class/misc/mdnie_preset/mdnie_preset",
+}},
+{ SPane:{
+                title:"Display control",
+        }},
+{ SSeekBar:{
+        default:10,
+        title:"Early Suspend Delay",
+        action:"generic-charge /sys/kernel/early_suspend/early_suspend_delay",
+        min:10, max:5000, step:10 }},
+        { SCheckBox:{
+                label:"Touch Wake",
+                default:0,
+                action:"generic /sys/class/misc/touchwake/enabled",
+        }},
+        { SCheckBox:{
+                label:"Touch Wake charger mode",
+                default:0,
+                action:"generic /sys/class/misc/touchwake/charger_mode",
+        }},
+        { SSeekBar:{
+                label:"Touch Wake delay in milliseconds (0=infinite)",
+                default:45000,
+                action:"generic /sys/class/misc/touchwake/delay",
+		min:0, max:600000, step:1000,
+        }},
+        { SCheckBox:{
+                label:"Knock-On",
+                default:0,
+                action:"generic /sys/class/misc/touchwake/knockon",
+        }},
+{ SSeekBar:{
+        default:10,
+        title:"Knock-On-delay",
+        action:"generic /sys/class/misc/touchwake/knockon_delay",
+        min:100, max:2000, step:100 }},
+    { STitleBar:{
+		title:"LED settings",
+	}},
+    { SOptionList:{
+	title:"Behavior of notification LED",
+        default:1,
+        action:"generic /sys/devices/virtual/sec/led/led_fade",
+        values:{
+1:"fade",
+0:"blink",
+        },
+    }},
+
+{ SSeekBar:{
+        default:1,
+        title:"LED speed",
+        action:"generic-charge /sys/devices/virtual/sec/led/led_speed",
+        min:0, max:60, step:1 }},
+{ SSeekBar:{
+        default:40,
+        title:"LED brightness",
+        action:"generic-charge /sys/devices/virtual/sec/led/led_intensity",
+        min:0, max:255, step:1 }},
+
+	 ]
+},
+    ]
+}

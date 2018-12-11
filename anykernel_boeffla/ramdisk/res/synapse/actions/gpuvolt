@@ -1,0 +1,32 @@
+gpuread() {
+	while read FREQ UVOLT; do
+		if [ $FREQ == $1 ]; then
+			echo $UVOLT
+			return
+		fi
+	done < $P
+}
+
+gpuwrite() {
+	VOLTARR=""
+	while read FREQ UVOLT; do
+		if [ $FREQ == $1 ]; then
+			VOLTARR="$VOLTARR $2"
+		else
+			VOLTARR="$VOLTARR $UVOLT"
+		fi
+	done < $P
+
+	echo $VOLTARR > $P
+}
+
+case $(basename $0) in
+gpuvolt)
+	P=/sys/devices/virtual/misc/gpu_voltage_control/gpu_control
+	if [[ ! -z $2 ]]; then
+		gpuwrite $1 $2
+	fi
+	echo $(gpuread $1)
+	;;
+
+esac
