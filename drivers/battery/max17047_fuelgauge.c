@@ -291,7 +291,17 @@ static int max17047_get_soc(struct i2c_client *client)
 		((rawsoc < empty) ? 0 : (min((rawsoc * 100 / fullsoc), 100)));
 
 	pr_info("%s: SOC(%d, %d / %d)\n", __func__, soc, rawsoc, fullsoc);
-	return soc;
+
+	/* Elite-Boeffla-Kernel: avoid battery becoming empty; soc is the percentage of battery charged */
+	if (soc < 1) {
+		pr_info("Elite-Boeffla-Kernel (max17047-fuelgauge): %d%% charged, but %d%% returned to Android.\n", soc, 1);
+		return 1;
+	}
+	else if (soc == 1) {
+		pr_info("Elite-Boeffla-Kernel (max17047-fuelgauge): %d%% charged, but %d%% returned to Android.\n", soc, 2);
+		return 2;
+	}
+	else return soc;
 }
 
 static void max17047_reset_soc(struct i2c_client *client)
