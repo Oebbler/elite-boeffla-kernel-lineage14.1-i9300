@@ -1512,43 +1512,39 @@ static struct samsung_battery_platform_data samsung_battery_pdata = {
 	.sub_charger_name   = "max8922-charger",
 #endif
 #if defined(CONFIG_MACH_GC1)
-	.voltage_max = 4200000,
+	.voltage_max = 4100000,
 #else
-	.voltage_max = 4350000,
+	.voltage_max = 4250000,
 #endif
-	.voltage_min = 3400000,
+	.voltage_min = 3300000,
 
 #if defined(CONFIG_MACH_GC1)
-	.in_curr_limit = 700,
-	.chg_curr_ta = 700,
-	.chg_curr_dock = 700,
-	.chg_curr_siop_lv1 = 475,
-	.chg_curr_siop_lv2 = 475,
-	.chg_curr_siop_lv3 = 475,
-#elif defined(CONFIG_MACH_T0)
-	.in_curr_limit = 1800,
-	.chg_curr_ta = 1700,
-	.chg_curr_dock = 1700,
-	.chg_curr_siop_lv1 = 1000,
-	.chg_curr_siop_lv2 = 475,
-	.chg_curr_siop_lv3 = 1,	/* zero make charger off */
-#else
 	.in_curr_limit = 1000,
 	.chg_curr_ta = 1000,
 	.chg_curr_dock = 1000,
-	.chg_curr_siop_lv1 = 475,
-	.chg_curr_siop_lv2 = 475,
-	.chg_curr_siop_lv3 = 475,
+	.chg_curr_siop_lv1 = 500,
+	.chg_curr_siop_lv2 = 500,
+	.chg_curr_siop_lv3 = 500,
+#elif defined(CONFIG_MACH_T0)
+	.in_curr_limit = 2100,
+	.chg_curr_ta = 2100,
+	.chg_curr_dock = 2100,
+	.chg_curr_siop_lv1 = 1000,
+	.chg_curr_siop_lv2 = 500,
+	.chg_curr_siop_lv3 = 1,	/* zero make charger off */
+#else
+	.in_curr_limit = 2100,
+	.chg_curr_ta = 2100,
+	.chg_curr_dock = 2100,
+	.chg_curr_siop_lv1 = 500,
+	.chg_curr_siop_lv2 = 500,
+	.chg_curr_siop_lv3 = 500,
 #endif
 
-	.chg_curr_usb = 475,
-	.chg_curr_cdp = 1000,
-#if defined(CONFIG_MACH_T0_USA_VZW)
-	.chg_curr_wpc = 650,
-#else
-	.chg_curr_wpc = 475,
-#endif
-	.chg_curr_etc = 475,
+	.chg_curr_usb = 500,
+	.chg_curr_cdp = 2000,
+	.chg_curr_wpc = 1000,
+	.chg_curr_etc = 500,
 
 	.chng_interval = 30,
 	.chng_susp_interval = 60,
@@ -1558,10 +1554,10 @@ static struct samsung_battery_platform_data samsung_battery_pdata = {
 	.emer_lv2_interval = 10,
 
 #if defined(CONFIG_MACH_GC1)
-	.recharge_voltage = 4150000,
+	.recharge_voltage = 4000000,
 #else
 	/* it will be cacaluated in probe */
-	.recharge_voltage = 4300000,
+	.recharge_voltage = 4150000,
 #endif
 
 #if defined(CONFIG_TARGET_LOCALE_KOR) || defined(CONFIG_MACH_M0_CTC) || \
@@ -2382,7 +2378,7 @@ struct s5p_platform_tmu midas_tmu_data __initdata = {
 		.stop_1st_throttle  = 85,
 		.start_1st_throttle = 90,
 		.stop_2nd_throttle  = 95,
-		.start_2nd_throttle = 103,
+		.start_2nd_throttle = 100,
 		.start_tripping	    = 110, /* temp to do tripping */
 		.start_emergency    = 120, /* To protect chip,forcely kernel panic */
 		.stop_mem_throttle  = 83,
@@ -2391,8 +2387,8 @@ struct s5p_platform_tmu midas_tmu_data __initdata = {
 		.start_tc = 10,
 	},
 	.cpufreq = {
-		.limit_1st_throttle  = 1200000, /* 1.200MHz in KHz order */
-		.limit_2nd_throttle  = 200000, /* 200MHz in KHz order */
+		.limit_1st_throttle  = 1400000, /* 1.200MHz in KHz order */
+		.limit_2nd_throttle  = 600000, /* 200MHz in KHz order */
 	},
 	.temp_compensate = {
 		.arm_volt = 925000, /* vdd_arm in uV for temperature compensation */

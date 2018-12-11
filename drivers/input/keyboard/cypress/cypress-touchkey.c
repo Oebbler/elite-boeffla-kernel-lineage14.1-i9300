@@ -86,6 +86,20 @@ static int touchkey_keycode[] = { 0,
 #else
 	KEY_MENU, KEY_BACK,
 
+/* Led-blink control variables */
+static unsigned int bln_led_blink_enabled = 0;
+struct bln_led_blink_control {
+	int delay_on; //ms
+	int delay_off; //ms
+	int brightness; //0 - 255
+};
+static int bln_led_blink_timeout = 600000;
+static struct bln_led_blink_control bln_led_blink;
+struct bln_breathing_step bln_led_control_steps_backup[2];
+static int bln_breathing_step_count_backup = 0;
+static int bln_notification_timeout_backup = 0;
+static unsigned int bln_breathing_backup = 0;
+
 #endif
 };
 static const int touchkey_count = sizeof(touchkey_keycode) / sizeof(int);
