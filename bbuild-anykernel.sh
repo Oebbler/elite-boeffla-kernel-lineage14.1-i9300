@@ -10,9 +10,9 @@
 # Parameters to be configured manually
 #######################################
 
-BOEFFLA_VERSION="6.0-alpha-CM14.1-i9300"
+BOEFFLA_VERSION="6.1.0.1-beta5-CM14.1-i9300"
 
-TOOLCHAIN="/opt/toolchains/arm-eabi-4.8/bin/arm-eabi-"
+TOOLCHAIN="/mnt/mount3/homefs/source/linux/toolchain/gcc-linaro-7.3.1-2018.05-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-"
 ARCHITECTURE=arm
 COMPILER_FLAGS_KERNEL="-mtune=cortex-a9 -fno-diagnostics-show-caret"
 COMPILER_FLAGS_MODULE="-mtune=cortex-a9 -fno-diagnostics-show-caret"
@@ -27,7 +27,7 @@ OUTPUT_FOLDER=""
 DEFCONFIG="boeffla_defconfig"
 DEFCONFIG_VARIANT=""
 
-KERNEL_NAME="Boeffla-Kernel"
+KERNEL_NAME="Elite-Boeffla-Kernel-unofficial"
 
 FINISH_MAIL_TO=""
 
@@ -39,7 +39,7 @@ SMB_SHARE_BACKUP=""
 SMB_FOLDER_BACKUP=""
 SMB_AUTH_BACKUP=""
 
-NUM_CPUS=""   # number of cpu cores used for build (leave empty for auto detection)
+NUM_CPUS="16"   # number of cpu cores used for build (leave empty for auto detection)
 
 #######################################
 # automatic parameters, do not touch !
@@ -55,8 +55,8 @@ ROOT_PATH=$PWD
 ROOT_DIR_NAME=`basename "$PWD"`
 cd $SOURCE_PATH
 
-BUILD_PATH="$ROOT_PATH/build"
-REPACK_PATH="$ROOT_PATH/repack"
+BUILD_PATH="/mnt/mount3/homefs/tmpfs/build"
+REPACK_PATH="/mnt/mount3/homefs/tmpfs/repack"
 
 BOEFFLA_DATE=$(date +%Y%m%d)
 GIT_BRANCH=`git symbolic-ref --short HEAD`
@@ -100,7 +100,7 @@ step0_copy_code()
 
 	# Replace version information in mkcompile_h with the one from x-settings.sh
 	sed "s/\`echo \$LINUX_COMPILE_BY | \$UTS_TRUNCATE\`/$KERNEL_NAME-$BOEFFLA_VERSION-$BOEFFLA_DATE/g" -i $BUILD_PATH/scripts/mkcompile_h
-	sed "s/\`echo \$LINUX_COMPILE_HOST | \$UTS_TRUNCATE\`/andip71/g" -i $BUILD_PATH/scripts/mkcompile_h
+	sed "s/\`echo \$LINUX_COMPILE_HOST | \$UTS_TRUNCATE\`/Oebbler/g" -i $BUILD_PATH/scripts/mkcompile_h
 }
 
 step1_make_clean()
@@ -261,7 +261,7 @@ step4_prepare_anykernel()
 	cd $REPACK_PATH
 	KERNELNAME="Flashing $KERNEL_NAME $BOEFFLA_VERSION"
 	sed -i "s;###kernelname###;${KERNELNAME};" META-INF/com/google/android/update-binary;
-	COPYRIGHT="(c) Lord Boeffla (aka andip71), $(date +%Y.%m.%d-%H:%M:%S)"
+	COPYRIGHT="(c) Lord Boeffla (aka andip71) and Oebbler, $(date +%Y.%m.%d-%H:%M:%S)"
 	sed -i "s;###copyright###;${COPYRIGHT};" META-INF/com/google/android/update-binary;
 }
 
@@ -407,6 +407,14 @@ stepB_backup()
 	fi
 }
 
+stepW_wipe() {
+	echo -e $COLOR_GREEN"\nw - factory wipe\n"$COLOR_NEUTRAL
+	TIME1=$(date +%s)
+	rm -rf $BUILD_PATH $REPACK_PATH ../compile.log
+	TIME=$(( `date +%s` - $TIME1 ))
+	echo -e "Wipe completed in $TIME seconds"
+}
+
 display_help()
 {
 	echo
@@ -423,6 +431,7 @@ display_help()
 	echo "rel = all, execute steps 0-9 - without CCACHE  |  r = rewrite config"
 	echo "a   = all, execute steps 0-9                   |  c = cleanup"
 	echo "u   = upd, execute steps 3-9                   |  b = backup"
+	echo "w   = factory wipe"
 	echo
 	echo "======================================================================"
 	echo
@@ -466,6 +475,7 @@ case "$1" in
 		step9_send_finished_mail
 		;;
 	a)
+		stepW_wipe
 		step0_copy_code
 		step1_make_clean
 		step2_make_config
@@ -522,6 +532,9 @@ case "$1" in
 		;;
 	r)
 		stepR_rewrite_config
+		;;
+	w)
+		stepW_wipe
 		;;
 
 	*)
