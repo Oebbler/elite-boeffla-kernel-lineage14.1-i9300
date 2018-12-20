@@ -1519,31 +1519,31 @@ static struct samsung_battery_platform_data samsung_battery_pdata = {
 	.voltage_min = 3300000,
 
 #if defined(CONFIG_MACH_GC1)
-	.in_curr_limit = 1000,
-	.chg_curr_ta = 1000,
-	.chg_curr_dock = 1000,
-	.chg_curr_siop_lv1 = 500,
-	.chg_curr_siop_lv2 = 500,
-	.chg_curr_siop_lv3 = 500,
+	.in_curr_limit = 2100,
+	.chg_curr_ta = 2100,
+	.chg_curr_dock = 2100,
+	.chg_curr_siop_lv1 = 2100,
+	.chg_curr_siop_lv2 = 2100,
+	.chg_curr_siop_lv3 = 2100,
 #elif defined(CONFIG_MACH_T0)
 	.in_curr_limit = 2100,
 	.chg_curr_ta = 2100,
 	.chg_curr_dock = 2100,
-	.chg_curr_siop_lv1 = 1000,
-	.chg_curr_siop_lv2 = 500,
-	.chg_curr_siop_lv3 = 1,	/* zero make charger off */
+	.chg_curr_siop_lv1 = 2100,
+	.chg_curr_siop_lv2 = 2100,
+	.chg_curr_siop_lv3 = 2100,	/* zero make charger off */
 #else
 	.in_curr_limit = 2100,
 	.chg_curr_ta = 2100,
 	.chg_curr_dock = 2100,
-	.chg_curr_siop_lv1 = 500,
-	.chg_curr_siop_lv2 = 500,
-	.chg_curr_siop_lv3 = 500,
+	.chg_curr_siop_lv1 = 2100,
+	.chg_curr_siop_lv2 = 2100,
+	.chg_curr_siop_lv3 = 2100,
 #endif
 
-	.chg_curr_usb = 500,
+	.chg_curr_usb = 2100,
 	.chg_curr_cdp = 2000,
-	.chg_curr_wpc = 1000,
+	.chg_curr_wpc = 2100,
 	.chg_curr_etc = 500,
 
 	.chng_interval = 30,
